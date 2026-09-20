@@ -31,6 +31,14 @@ jobs:
 
       - name: Build
         run: bun run build
+        - name: Verify index.html
+        run: |
+        echo "checking public
+        output . . ."
+        1s -1a .output/public
+        test -f .output/public
+        index.html
+        echo "index.html FOUND!"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
