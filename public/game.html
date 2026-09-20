@@ -1,0 +1,3262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sanju's Ganesha Word Hunt</title>
+
+    <style>
+        /* =========================================================
+   SANJU'S GANESHA WORD HUNT
+   HTML + CSS + VANILLA JAVASCRIPT
+   ========================================================= */
+
+        :root {
+            --bg: #fff5df;
+            --card: #ffffff;
+            --card2: #fffaf1;
+            --text: #3b2114;
+            --muted: #765d4b;
+            --primary: #d94801;
+            --primary2: #ff8c00;
+            --gold: #f4b400;
+            --green: #218739;
+            --red: #d62828;
+            --border: rgba(120, 70, 20, 0.15);
+            --shadow: 0 12px 35px rgba(90, 45, 10, 0.15);
+            --grid-size: min(72vw, 620px);
+        }
+
+        body.dark {
+            --bg: #17100c;
+            --card: #251812;
+            --card2: #2d1d15;
+            --text: #fff1db;
+            --muted: #d0b6a0;
+            --primary: #ff8c42;
+            --primary2: #ffb347;
+            --gold: #ffd166;
+            --green: #65d477;
+            --red: #ff6969;
+            --border: rgba(255, 255, 255, 0.12);
+            --shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+            background:
+                radial-gradient(circle at 10% 10%, rgba(255, 180, 0, .16), transparent 25%),
+                radial-gradient(circle at 90% 20%, rgba(255, 100, 0, .14), transparent 25%),
+                var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* =========================================================
+   FESTIVAL LIGHTS
+   ========================================================= */
+
+        .festival-lights {
+            width: 100%;
+            height: 55px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgba(0, 0, 0, .08);
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .light {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ffd166;
+            box-shadow:
+                0 0 8px #ffd166,
+                0 0 18px #ffd166,
+                0 0 30px #ffd166;
+            animation: glow 1.2s infinite alternate;
+        }
+
+        .light:nth-child(2n) {
+            animation-delay: .2s;
+        }
+
+        .light:nth-child(3n) {
+            animation-delay: .4s;
+        }
+
+        .light:nth-child(4n) {
+            animation-delay: .6s;
+        }
+
+        @keyframes glow {
+            from {
+                opacity: .45;
+                transform: scale(.75);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1.15);
+            }
+        }
+
+        /* =========================================================
+   HEADER
+   ========================================================= */
+
+        header {
+            padding: 18px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(15px);
+            background: color-mix(in srgb, var(--bg) 86%, transparent);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            font-size: 42px;
+            filter: drop-shadow(0 5px 10px rgba(255, 140, 0, .25));
+        }
+
+        .brand h1 {
+            font-size: clamp(20px, 3vw, 32px);
+            color: var(--primary);
+        }
+
+        .brand p {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        button,
+        select,
+        input {
+            font: inherit;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+        }
+
+        .icon-btn,
+        .nav-btn {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            transition: .2s ease;
+        }
+
+        .icon-btn:hover,
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* =========================================================
+   MAIN
+   ========================================================= */
+
+        main {
+            width: min(1200px, 94%);
+            margin: 25px auto 60px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* =========================================================
+   HERO
+   ========================================================= */
+
+        .hero {
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        .hero-ganesha {
+            font-size: clamp(70px, 12vw, 125px);
+            animation: floatGanesha 3s ease-in-out infinite;
+        }
+
+        @keyframes floatGanesha {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .hero h2 {
+            font-size: clamp(28px, 5vw, 52px);
+            color: var(--primary);
+            margin: 8px 0;
+        }
+
+        .slogan {
+            color: var(--muted);
+            font-size: clamp(14px, 2vw, 18px);
+            font-style: italic;
+        }
+
+        /* =========================================================
+   CARDS
+   ========================================================= */
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+        }
+
+        .register-card {
+            max-width: 650px;
+            margin: 20px auto;
+        }
+
+        .card-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title h3 {
+            color: var(--primary);
+            font-size: 25px;
+        }
+
+        .card-title p {
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        /* =========================================================
+   FORM
+   ========================================================= */
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 13px;
+            border: 2px solid var(--border);
+            background: var(--card2);
+            color: var(--text);
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+        }
+
+        .primary-btn {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 15px;
+            color: white;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            box-shadow: 0 8px 20px rgba(217, 72, 1, .25);
+            transition: .2s;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* =========================================================
+   WELCOME
+   ========================================================= */
+
+        .welcome {
+            background: linear-gradient(135deg,
+                    rgba(255, 140, 0, .12),
+                    rgba(255, 209, 102, .14));
+            padding: 18px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .welcome strong {
+            color: var(--primary);
+        }
+
+        /* =========================================================
+   DECORATIONS
+   ========================================================= */
+
+        .decorations {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 35px;
+            margin: 15px 0;
+            animation: decorationFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes decorationFloat {
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        /* =========================================================
+   LEVELS
+   ========================================================= */
+
+        .level-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .level-header h2 {
+            color: var(--primary);
+        }
+
+        .level-header p {
+            color: var(--muted);
+        }
+
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+            gap: 12px;
+        }
+
+        .level-card {
+            min-height: 105px;
+            padding: 12px;
+            border-radius: 18px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            color: var(--text);
+            transition: .2s;
+        }
+
+        .level-card.unlocked {
+            cursor: pointer;
+        }
+
+        .level-card.unlocked:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .level-card.current {
+            border-color: var(--gold);
+            box-shadow:
+                0 0 0 3px rgba(244, 180, 0, .18),
+                var(--shadow);
+        }
+
+        .level-card.completed {
+            border-color: var(--green);
+        }
+
+        .level-card.locked {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .level-number {
+            font-size: 25px;
+            font-weight: 900;
+        }
+
+        .level-status {
+            font-size: 22px;
+        }
+
+        .level-score {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* =========================================================
+   GAME
+   ========================================================= */
+
+        .game-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .game-title h2 {
+            color: var(--primary);
+        }
+
+        .game-title p {
+            color: var(--muted);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(110px, 1fr));
+            gap: 10px;
+        }
+
+        .stat {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 12px 18px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat span {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .stat strong {
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .game-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .grid-card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .grid-wrapper {
+            position: relative;
+            width: var(--grid-size);
+            max-width: 100%;
+            aspect-ratio: 1 / 1;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .word-grid {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(12, 1fr);
+            z-index: 2;
+        }
+
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 0;
+            min-height: 0;
+            font-weight: 900;
+            font-size: clamp(12px, 2.3vw, 26px);
+            color: var(--text);
+            border: 1px solid var(--border);
+            background: var(--card2);
+            transition: .1s;
+            cursor: crosshair;
+        }
+
+        .cell.selected {
+            background: rgba(255, 193, 7, .65);
+            color: #311700;
+            transform: scale(.95);
+        }
+
+        .cell.found {
+            background: rgba(33, 135, 57, .18);
+            color: var(--green);
+        }
+
+        .lines-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .found-line {
+            stroke: #e63946;
+            stroke-width: 5;
+            stroke-linecap: round;
+            opacity: .85;
+            filter: drop-shadow(0 0 4px rgba(230, 57, 70, .5));
+        }
+
+        .current-line {
+            stroke: #ff9800;
+            stroke-width: 7;
+            stroke-linecap: round;
+            opacity: .55;
+            pointer-events: none;
+        }
+
+        /* =========================================================
+   WORD LIST
+   ========================================================= */
+
+        .words-card h3 {
+            color: var(--primary);
+            margin-bottom: 14px;
+        }
+
+        .word-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .word-item {
+            padding: 9px;
+            border-radius: 10px;
+            background: var(--card2);
+            border: 1px solid var(--border);
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .word-item.found {
+            color: var(--green);
+            text-decoration: line-through;
+            opacity: .65;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: var(--card2);
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--gold));
+            transition: width .3s;
+        }
+
+        /* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+        .bottom-nav {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .bottom-nav button {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        /* =========================================================
+   LEADERBOARD
+   ========================================================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .leaderboard {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        .leaderboard th,
+        .leaderboard td {
+            padding: 13px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .leaderboard th {
+            background: var(--primary);
+            color: white;
+        }
+
+        .leaderboard tr:hover td {
+            background: var(--card2);
+        }
+
+        .rank-medal {
+            font-size: 20px;
+        }
+
+        /* =========================================================
+   MODAL
+   ========================================================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, .65);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-card {
+            max-width: 500px;
+            width: 100%;
+            background: var(--card);
+            border-radius: 28px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .35);
+            animation: modalPop .3s ease;
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: scale(.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-ganesha {
+            font-size: 75px;
+        }
+
+        .modal-card h2 {
+            color: var(--primary);
+            margin: 8px 0;
+        }
+
+        .modal-card p {
+            color: var(--muted);
+            margin: 8px 0;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+        }
+
+        /* =========================================================
+   FOOTER
+   ========================================================= */
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--muted);
+        }
+
+        footer strong {
+            color: var(--primary);
+        }
+
+        /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 850px) {
+            .game-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-card {
+                padding: 8px;
+            }
+
+            .words-card {
+                order: 2;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                position: static;
+            }
+
+            .header-inner {
+                flex-direction: column;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stats {
+                width: 100%;
+            }
+
+            .level-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 7px;
+            }
+
+            .level-card {
+                min-height: 85px;
+                border-radius: 13px;
+            }
+
+            .level-number {
+                font-size: 18px;
+            }
+
+            .level-status {
+                font-size: 17px;
+            }
+
+            .word-list {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+     FESTIVAL LIGHTS
+     ========================================================= -->
+
+    <div class="festival-lights">
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+    </div>
+
+    <!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+    <header>
+        <div class="header-inner">
+
+            <div class="brand">
+                <div class="brand-icon">🐘</div>
+                <div>
+                    <h1>Sanju's Ganesha Word Hunt</h1>
+                    <p>Remover of Obstacles, Bringer of Blessings</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="nav-btn" onclick="showScreen('levels')">
+                    🏆 Levels
+                </button>
+
+                <button class="nav-btn" onclick="showScreen('leaderboard')">
+                    🥇 Leaderboard
+                </button>
+
+                <button class="icon-btn" onclick="toggleTheme()" id="themeButton">
+                    🌙
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <main>
+
+        <!-- =========================================================
+     REGISTRATION SCREEN
+     ========================================================= -->
+
+        <section id="registrationScreen" class="screen active">
+
+            <div class="hero">
+                <div class="hero-ganesha">🐘</div>
+
+                <h2>Sanju's Ganesha Word Hunt</h2>
+
+                <p class="slogan">
+                    "Remover of Obstacles, Bringer of Blessings"
+                </p>
+
+                <div class="decorations">
+                    🪔 🐭 🌸 🕯️ 🪷 🎉 🪔
+                </div>
+            </div>
+
+            <div class="card register-card">
+
+                <div class="card-title">
+                    <h3>🎓 NIAT Student Registration</h3>
+                    <p>Register first to access the game.</p>
+                </div>
+
+                <form id="registrationForm">
+
+                    <div class="form-group">
+                        <label for="studentName">Student Name</label>
+
+                        <input id="studentName" type="text" placeholder="Enter your name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="studentId">Student ID</label>
+
+                        <input id="studentId" type="text" placeholder="Enter your student ID" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="university">University / College</label>
+
+                        <select id="university" required>
+                            <option value="">Select University</option>
+
+                            <option>BESTIU (Anantapur)</option>
+                            <option>Annamacharya University (Tirupati)</option>
+                            <option>Chalapathi Institute of Technology (Guntur)</option>
+                            <option>NSRIT (Visakhapatnam)</option>
+                            <option>NRI University (Vijayawada)</option>
+                            <option>Yenepoya University (Mangalore)</option>
+                            <option>S-VYASA Deemed to be University (Bengaluru)</option>
+                            <option>Chaitanya Deemed to be University (Hyderabad)</option>
+                            <option>AMET University (Chennai)</option>
+                            <option>JOY University (Tamil Nadu)</option>
+                            <option>Aurora Deemed University (Hyderabad)</option>
+                        </select>
+                    </div>
+
+                    <button class="primary-btn" type="submit">
+                        🚀 Start Ganesha Word Hunt
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- =========================================================
+     LEVEL SCREEN
+     ========================================================= -->
+
+        <section id="levelsScreen" class="screen">
+
+            <div id="welcomeBox" class="welcome"></div>
+
+            <div class="level-header">
+                <div class="hero-ganesha" style="font-size:70px;">🐘</div>
+
+                <h2>Choose Your Level</h2>
+
+                <p>
+                    Complete each level to unlock the next one.
+                </p>
+            </div>
+
+            <div class="card">
+                <div id="levelGrid" class="level-grid"></div>
+            </div>
+
+            <div class="bottom-nav">
+
+                <button class="nav-btn" onclick="showScreen('leaderboard')">
+                    🥇 Leaderboard
+                </button>
+
+                <button class="nav-btn" onclick="logoutStudent()">
+                    🚪 Change Student
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- =========================================================
+     GAME SCREEN
+     ========================================================= -->
+
+        <section id="gameScreen" class="screen">
+
+            <div class="game-top">
+
+                <div class="game-title">
+                    <h2 id="gameLevelTitle">Level 1</h2>
+                    <p id="gameWelcome"></p>
+                </div>
+
+                <div class="stats">
+
+                    <div class="stat">
+                        <span>⭐ Score</span>
+                        <strong id="scoreDisplay">0</strong>
+                    </div>
+
+                    <div class="stat">
+                        <span>⏱️ Timer</span>
+                        <strong id="timerDisplay">00:00</strong>
+                    </div>
+
+                    <div class="stat">
+                        <span>📝 Words</span>
+                        <strong id="wordsDisplay">0 / 10</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="game-layout">
+
+                <div class="card grid-card">
+
+                    <div id="gridWrapper" class="grid-wrapper">
+
+                        <div id="wordGrid" class="word-grid"></div>
+
+                        <svg id="linesSvg" class="lines-svg" viewBox="0 0 1200 1200" preserveAspectRatio="none">
+                            <line id="currentLine" class="current-line" x1="0" y1="0" x2="0" y2="0" style="display:none" />
+                        </svg>
+
+                    </div>
+
+                </div>
+
+                <div class="card words-card">
+
+                    <h3>🔎 Find These Words</h3>
+
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+
+                    <div id="wordList" class="word-list"></div>
+
+                    <div class="bottom-nav">
+
+                        <button class="nav-btn" onclick="showScreen('levels')">
+                            ← Levels
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =========================================================
+     LEADERBOARD SCREEN
+     ========================================================= -->
+
+        <section id="leaderboardScreen" class="screen">
+
+            <div class="hero">
+
+                <div class="hero-ganesha" style="font-size:70px;">
+                    🏆
+                </div>
+
+                <h2>NIAT Leaderboard</h2>
+
+                <p class="slogan">
+                    Celebrate your progress and achievements!
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <div class="table-wrapper">
+
+                    <table class="leaderboard">
+
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Student Name</th>
+                                <th>Student ID</th>
+                                <th>University</th>
+                                <th>Level</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="leaderboardBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <div class="bottom-nav">
+
+                <button class="nav-btn" onclick="goHomeFromLeaderboard()">
+                    🏠 Back
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        🐘 🪔 🌸
+        <strong>Sanju's Ganesha Word Hunt</strong>
+        🐭 🕯️ 🌸
+        <br>
+        <small>Made with HTML, CSS and Vanilla JavaScript</small>
+    </footer>
+
+    <!-- =========================================================
+     LEVEL COMPLETION MODAL
+     ========================================================= -->
+
+    <div id="completionModal" class="modal">
+
+        <div class="modal-card">
+
+            <div class="modal-ganesha">🐘</div>
+
+            <h2 id="completionTitle">
+                Level Completed!
+            </h2>
+
+            <p id="completionMessage"></p>
+
+            <p>
+                ⭐ Final Score:
+                <strong id="completionScore"></strong>
+            </p>
+
+            <p id="unlockMessage"></p>
+
+            <div class="modal-buttons">
+
+                <button id="nextLevelButton" class="primary-btn" onclick="goToNextLevel()">
+                    🚀 Next Level
+                </button>
+
+                <button class="nav-btn" onclick="closeCompletionModal()">
+                    Continue Later
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        /* =========================================================
+   GAME CONFIGURATION
+   ========================================================= */
+
+        const GRID_SIZE = 12;
+        const WORDS_PER_LEVEL = 10;
+        const TOTAL_LEVELS = 100;
+        const POINTS_PER_WORD = 100;
+
+
+        /* =========================================================
+           WORD DATABASE
+           ========================================================= */
+
+        const WORD_BANK = [
+            "GANESHA",
+            "GANAPATI",
+            "VINAYAKA",
+            "VIGHNAHARTA",
+            "EKADANTA",
+            "VAKRATUNDA",
+            "LAMBODARA",
+            "GAJANAN",
+            "MODAK",
+            "DIYA",
+            "DEEPAM",
+            "CANDLE",
+            "MUSHAK",
+            "PUJA",
+            "TEMPLE",
+            "RANGOLI",
+            "FLOWERS",
+            "FESTIVAL",
+            "DIWALI",
+            "CELEBRATION",
+            "AARTI",
+            "PRASAD",
+            "MANDIR",
+            "BHAKTI",
+            "DEVOTION",
+            "BLESSINGS",
+            "OBSTACLE",
+            "WISDOM",
+            "SUCCESS",
+            "PROSPERITY",
+            "JOY",
+            "PEACE",
+            "FAITH",
+            "PRAYER",
+            "SHIVA",
+            "PARVATI",
+            "KARTIKEYA",
+            "MOUSE",
+            "ELEPHANT",
+            "TRUNK",
+            "CROWN",
+            "SWEET",
+            "LADDU",
+            "DURVA",
+            "LOTUS",
+            "MARIGOLD",
+            "JASMINE",
+            "ROSE",
+            "TORAN",
+            "DECORATION",
+            "LIGHTS",
+            "LAMP",
+            "INCENSE",
+            "CHANDAN",
+            "KUMKUM",
+            "TILAK",
+            "PANDAL",
+            "PROCESSION",
+            "IMMERSION",
+            "FESTIVE",
+            "CULTURE",
+            "TRADITION",
+            "INDIA",
+            "INDIAN",
+            "HERITAGE",
+            "MANGAL",
+            "SHUBH",
+            "AUSPICIOUS",
+            "CELEBRATE",
+            "HAPPINESS",
+            "KNOWLEDGE",
+            "MEDITATION",
+            "MANTTRA",
+            "MANTRA",
+            "OM",
+            "DIVINE",
+            "DIVINITY",
+            "SPIRIT",
+            "SOUL",
+            "BLESS",
+            "REJOICE",
+            "MUSIC",
+            "DRUM",
+            "DHOL",
+            "DANCE",
+            "COLOR",
+            "ORANGE",
+            "YELLOW",
+            "RED",
+            "FLOWER",
+            "GARLAND",
+            "PUJA THALI",
+            "PRAYER",
+            "SANKASHTI",
+            "CHOUTH",
+            "GANESHCHATURTHI",
+            "CHATURTHI",
+            "VINAYAKA",
+            "BAPPA",
+            "MORYA",
+            "MORAYA",
+            "SHREE",
+            "SHRI",
+            "OMKAR",
+            "AASHIRWAD",
+            "ANAND",
+            "MANGALAM",
+            "SANSKRITI",
+            "PARAMPARA",
+            "FESTIVAL",
+            "CELEBRATION",
+            "BHAJAN",
+            "KIRTAN",
+            "PUROHIT",
+            "DEVOTE",
+            "OFFERING",
+            "SANCTUARY",
+            "DIVINE",
+            "SACRED",
+            "SPIRITUAL",
+            "POSITIVE",
+            "COURAGE",
+            "STRENGTH",
+            "PATIENT",
+            "KINDNESS",
+            "GOODNESS",
+            "HOPE",
+            "DREAM",
+            "ACHIEVEMENT",
+            "VICTORY",
+            "LEARNING",
+            "STUDENT",
+            "CAMPUS",
+            "UNIVERSITY",
+            "NIAT",
+            "CODING",
+            "TECHNOLOGY",
+            "INNOVATION",
+            "FUTURE",
+            "CAREER",
+            "SKILL",
+            "PROJECT",
+            "CREATIVITY",
+            "IDEA",
+            "TEAMWORK",
+            "LEADER",
+            "SUCCESSFUL",
+            "EXCELLENCE"
+        ];
+
+
+        /* =========================================================
+           STATE
+           ========================================================= */
+
+        let student = null;
+
+        let unlockedLevels = 1;
+
+        let completedLevels = [];
+
+        let levelScores = {};
+
+        let currentLevel = 1;
+
+        let currentWords = [];
+
+        let currentPlacements = [];
+
+        let foundWords = new Set();
+
+        let score = 0;
+
+        let timerSeconds = 0;
+
+        let timerInterval = null;
+
+        let selecting = false;
+
+        let selectionStart = null;
+
+        let selectionCells = [];
+
+        let board = [];
+
+
+        /* =========================================================
+           LOCAL STORAGE HELPERS
+           ========================================================= */
+
+        function saveState() {
+
+            localStorage.setItem(
+                "sgwh_student",
+                JSON.stringify(student)
+            );
+
+            localStorage.setItem(
+                "sgwh_unlockedLevels",
+                unlockedLevels
+            );
+
+            localStorage.setItem(
+                "sgwh_completedLevels",
+                JSON.stringify(completedLevels)
+            );
+
+            localStorage.setItem(
+                "sgwh_levelScores",
+                JSON.stringify(levelScores)
+            );
+        }
+
+
+        function loadState() {
+
+            try {
+
+                const savedStudent =
+                    localStorage.getItem("sgwh_student");
+
+                if (savedStudent) {
+                    student = JSON.parse(savedStudent);
+                }
+
+                const savedUnlocked =
+                    localStorage.getItem("sgwh_unlockedLevels");
+
+                if (savedUnlocked) {
+                    unlockedLevels =
+                        Math.max(
+                            1,
+                            Math.min(
+                                TOTAL_LEVELS,
+                                Number(savedUnlocked)
+                            )
+                        );
+                }
+
+                const savedCompleted =
+                    localStorage.getItem("sgwh_completedLevels");
+
+                if (savedCompleted) {
+                    completedLevels =
+                        JSON.parse(savedCompleted);
+                }
+
+                const savedScores =
+                    localStorage.getItem("sgwh_levelScores");
+
+                if (savedScores) {
+                    levelScores =
+                        JSON.parse(savedScores);
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Could not restore saved game data:",
+                    error
+                );
+
+            }
+        }
+
+
+        /* =========================================================
+           THEME
+           ========================================================= */
+
+        function loadTheme() {
+
+            const theme =
+                localStorage.getItem("sgwh_theme");
+
+            if (theme === "dark") {
+
+                document.body.classList.add("dark");
+
+                document.getElementById(
+                    "themeButton"
+                ).textContent = "☀️";
+
+            } else {
+
+                document.body.classList.remove("dark");
+
+                document.getElementById(
+                    "themeButton"
+                ).textContent = "🌙";
+            }
+        }
+
+
+        function toggleTheme() {
+
+            document.body.classList.toggle("dark");
+
+            const dark =
+                document.body.classList.contains("dark");
+
+            localStorage.setItem(
+                "sgwh_theme",
+                dark ? "dark" : "light"
+            );
+
+            document.getElementById(
+                "themeButton"
+            ).textContent = dark ? "☀️" : "🌙";
+        }
+
+
+        /* =========================================================
+           SCREEN NAVIGATION
+           ========================================================= */
+
+        function showScreen(screenName) {
+
+            if (
+                screenName !== "registration" &&
+                !student
+            ) {
+                screenName = "registration";
+            }
+
+            document
+                .querySelectorAll(".screen")
+                .forEach(screen => {
+                    screen.classList.remove("active");
+                });
+
+            const target =
+                document.getElementById(
+                    screenName + "Screen"
+                );
+
+            if (target) {
+                target.classList.add("active");
+            }
+
+            if (screenName === "levels") {
+                renderLevels();
+            }
+
+            if (screenName === "leaderboard") {
+                renderLeaderboard();
+            }
+
+            if (screenName === "game") {
+                updateGameUI();
+            }
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+
+        /* =========================================================
+           REGISTRATION
+           ========================================================= */
+
+        document
+            .getElementById("registrationForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                const name =
+                    document
+                    .getElementById("studentName")
+                    .value
+                    .trim();
+
+                const id =
+                    document
+                    .getElementById("studentId")
+                    .value
+                    .trim();
+
+                const university =
+                    document
+                    .getElementById("university")
+                    .value;
+
+                if (!name || !id || !university) {
+                    alert("Please complete all registration fields.");
+                    return;
+                }
+
+                const oldStudent = student;
+
+                student = {
+                    name,
+                    id,
+                    university
+                };
+
+                /*
+                 * If this is the same student, retain progress.
+                 * If a different student registers, start fresh.
+                 */
+                if (
+                    !oldStudent ||
+                    oldStudent.id !== id
+                ) {
+
+                    unlockedLevels = 1;
+                    completedLevels = [];
+                    levelScores = {};
+
+                }
+
+                saveState();
+
+                showScreen("levels");
+            });
+
+
+        /* =========================================================
+           LEVEL GENERATION
+           ========================================================= */
+
+        /*
+           We need exactly 10 words per level.
+
+           The database contains many words. For each level,
+           we rotate through the word bank so every level gets
+           its own 10-word set.
+
+           Spaces are removed automatically.
+        */
+
+        function cleanWord(word) {
+
+            return word
+                .toUpperCase()
+                .replace(/[^A-Z]/g, "");
+        }
+
+
+        function getWordsForLevel(level) {
+
+            const cleaned =
+                WORD_BANK
+                .map(cleanWord)
+                .filter(word =>
+                    word.length >= 3 &&
+                    word.length <= GRID_SIZE
+                );
+
+            const start =
+                ((level - 1) * WORDS_PER_LEVEL) %
+                cleaned.length;
+
+            const selected = [];
+
+            for (
+                let i = 0; i < WORDS_PER_LEVEL; i++
+            ) {
+
+                selected.push(
+                    cleaned[
+                        (start + i) %
+                        cleaned.length
+                    ]
+                );
+            }
+
+            return selected;
+        }
+
+
+        /* =========================================================
+           BOARD CREATION
+           ========================================================= */
+
+        function createEmptyBoard() {
+
+            board =
+                Array.from({
+                        length: GRID_SIZE
+                    },
+                    () =>
+                    Array(GRID_SIZE).fill("")
+                );
+        }
+
+
+        function canPlaceWord(
+            word,
+            row,
+            col,
+            dr,
+            dc
+        ) {
+
+            for (
+                let i = 0; i < word.length; i++
+            ) {
+
+                const r =
+                    row + dr * i;
+
+                const c =
+                    col + dc * i;
+
+                if (
+                    r < 0 ||
+                    r >= GRID_SIZE ||
+                    c < 0 ||
+                    c >= GRID_SIZE
+                ) {
+                    return false;
+                }
+
+                const existing =
+                    board[r][c];
+
+                if (
+                    existing !== "" &&
+                    existing !== word[i]
+                ) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
+        function placeWord(
+            word,
+            row,
+            col,
+            dr,
+            dc
+        ) {
+
+            for (
+                let i = 0; i < word.length; i++
+            ) {
+
+                const r =
+                    row + dr * i;
+
+                const c =
+                    col + dc * i;
+
+                board[r][c] =
+                    word[i];
+            }
+
+            currentPlacements.push({
+                word,
+                start: {
+                    row,
+                    col
+                },
+                end: {
+                    row: row + dr * (word.length - 1),
+                    col: col + dc * (word.length - 1)
+                }
+            });
+        }
+
+
+        function generateBoard(words) {
+
+            createEmptyBoard();
+
+            currentPlacements = [];
+
+            /*
+             * Directions:
+             * horizontal
+             * reverse horizontal
+             * vertical
+             * reverse vertical
+             * diagonals
+             */
+
+            const directions = [
+                [0, 1],
+                [0, -1],
+                [1, 0],
+                [-1, 0],
+                [1, 1],
+                [-1, -1],
+                [1, -1],
+                [-1, 1]
+            ];
+
+            /*
+             * Long words first makes placement more reliable.
+             */
+
+            const sortedWords = [...words].sort(
+                (a, b) =>
+                b.length - a.length
+            );
+
+            for (const word of sortedWords) {
+
+                let placed = false;
+
+                /*
+                 * Try many randomized positions.
+                 */
+
+                for (
+                    let attempt = 0; attempt < 1500 && !placed; attempt++
+                ) {
+
+                    const direction =
+                        directions[
+                            Math.floor(
+                                Math.random() *
+                                directions.length
+                            )
+                        ];
+
+                    const row =
+                        Math.floor(
+                            Math.random() *
+                            GRID_SIZE
+                        );
+
+                    const col =
+                        Math.floor(
+                            Math.random() *
+                            GRID_SIZE
+                        );
+
+                    if (
+                        canPlaceWord(
+                            word,
+                            row,
+                            col,
+                            direction[0],
+                            direction[1]
+                        )
+                    ) {
+
+                        placeWord(
+                            word,
+                            row,
+                            col,
+                            direction[0],
+                            direction[1]
+                        );
+
+                        placed = true;
+                    }
+                }
+
+                /*
+                 * Guaranteed fallback:
+                 * try every position and direction.
+                 */
+
+                if (!placed) {
+
+                    outer: for (
+                        let row = 0; row < GRID_SIZE; row++
+                    ) {
+
+                        for (
+                            let col = 0; col < GRID_SIZE; col++
+                        ) {
+
+                            for (
+                                const direction of directions
+                            ) {
+
+                                if (
+                                    canPlaceWord(
+                                        word,
+                                        row,
+                                        col,
+                                        direction[0],
+                                        direction[1]
+                                    )
+                                ) {
+
+                                    placeWord(
+                                        word,
+                                        row,
+                                        col,
+                                        direction[0],
+                                        direction[1]
+                                    );
+
+                                    placed = true;
+
+                                    break outer;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /*
+             * Fill unused cells.
+             */
+
+            const alphabet =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            for (
+                let row = 0; row < GRID_SIZE; row++
+            ) {
+
+                for (
+                    let col = 0; col < GRID_SIZE; col++
+                ) {
+
+                    if (board[row][col] === "") {
+
+                        board[row][col] =
+                            alphabet[
+                                Math.floor(
+                                    Math.random() *
+                                    alphabet.length
+                                )
+                            ];
+                    }
+                }
+            }
+        }
+
+
+        /* =========================================================
+           RENDER GRID
+           ========================================================= */
+
+        function renderGrid() {
+
+            const grid =
+                document.getElementById(
+                    "wordGrid"
+                );
+
+            grid.innerHTML = "";
+
+            for (
+                let row = 0; row < GRID_SIZE; row++
+            ) {
+
+                for (
+                    let col = 0; col < GRID_SIZE; col++
+                ) {
+
+                    const cell =
+                        document.createElement("div");
+
+                    cell.className = "cell";
+
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+
+                    cell.textContent =
+                        board[row][col];
+
+                    grid.appendChild(cell);
+                }
+            }
+
+            renderWordList();
+        }
+
+
+        /* =========================================================
+           WORD LIST
+           ========================================================= */
+
+        function renderWordList() {
+
+            const list =
+                document.getElementById(
+                    "wordList"
+                );
+
+            list.innerHTML = "";
+
+            currentWords.forEach(word => {
+
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "word-item";
+
+                if (foundWords.has(word)) {
+                    item.classList.add("found");
+                }
+
+                item.textContent =
+                    foundWords.has(word) ?
+                    "✓ " + word :
+                    word;
+
+                list.appendChild(item);
+            });
+        }
+
+
+        /* =========================================================
+           START LEVEL
+           ========================================================= */
+
+        function startLevel(level) {
+
+            if (
+                !student ||
+                level < 1 ||
+                level > unlockedLevels
+            ) {
+                return;
+            }
+
+            currentLevel = level;
+
+            currentWords =
+                getWordsForLevel(level);
+
+            foundWords =
+                new Set();
+
+            score = 0;
+
+            timerSeconds = 0;
+
+            stopTimer();
+
+            generateBoard(currentWords);
+
+            renderGrid();
+
+            clearLines();
+
+            updateGameUI();
+
+            startTimer();
+
+            showScreen("game");
+        }
+
+
+        /* =========================================================
+           TIMER
+           ========================================================= */
+
+        function startTimer() {
+
+            stopTimer();
+
+            timerInterval =
+                setInterval(() => {
+
+                    timerSeconds++;
+
+                    updateTimerDisplay();
+
+                }, 1000);
+        }
+
+
+        function stopTimer() {
+
+            if (timerInterval) {
+
+                clearInterval(timerInterval);
+
+                timerInterval = null;
+            }
+        }
+
+
+        function formatTime(seconds) {
+
+            const mins =
+                Math.floor(seconds / 60);
+
+            const secs =
+                seconds % 60;
+
+            return (
+                String(mins).padStart(2, "0") +
+                ":" +
+                String(secs).padStart(2, "0")
+            );
+        }
+
+
+        function updateTimerDisplay() {
+
+            document.getElementById(
+                    "timerDisplay"
+                ).textContent =
+                formatTime(timerSeconds);
+        }
+
+
+        /* =========================================================
+           GAME UI
+           ========================================================= */
+
+        function updateGameUI() {
+
+            document.getElementById(
+                    "gameLevelTitle"
+                ).textContent =
+                "Level " + currentLevel;
+
+            document.getElementById(
+                    "gameWelcome"
+                ).textContent =
+                student ?
+                "Welcome, " + student.name + " 🐘" :
+                "";
+
+            document.getElementById(
+                    "scoreDisplay"
+                ).textContent =
+                score;
+
+            document.getElementById(
+                    "wordsDisplay"
+                ).textContent =
+                foundWords.size +
+                " / " +
+                WORDS_PER_LEVEL;
+
+            document.getElementById(
+                    "progressFill"
+                ).style.width =
+                (
+                    foundWords.size /
+                    WORDS_PER_LEVEL *
+                    100
+                ) + "%";
+
+            updateTimerDisplay();
+        }
+
+
+        /* =========================================================
+           POINTER / TOUCH SELECTION
+           ========================================================= */
+
+        const gridWrapper =
+            document.getElementById(
+                "gridWrapper"
+            );
+
+        gridWrapper.addEventListener(
+            "pointerdown",
+            handlePointerDown
+        );
+
+        gridWrapper.addEventListener(
+            "pointermove",
+            handlePointerMove
+        );
+
+        gridWrapper.addEventListener(
+            "pointerup",
+            handlePointerUp
+        );
+
+        gridWrapper.addEventListener(
+            "pointercancel",
+            handlePointerCancel
+        );
+
+        gridWrapper.addEventListener(
+            "pointerleave",
+            handlePointerLeave
+        );
+
+
+        function getCellFromPointer(event) {
+
+            const element =
+                document.elementFromPoint(
+                    event.clientX,
+                    event.clientY
+                );
+
+            if (
+                !element ||
+                !element.classList.contains("cell")
+            ) {
+                return null;
+            }
+
+            return {
+                row: Number(element.dataset.row),
+                col: Number(element.dataset.col)
+            };
+        }
+
+
+        function handlePointerDown(event) {
+
+            event.preventDefault();
+
+            const cell =
+                getCellFromPointer(event);
+
+            if (!cell) {
+                return;
+            }
+
+            selecting = true;
+
+            selectionStart = cell;
+
+            selectionCells = [cell];
+
+            try {
+                gridWrapper.setPointerCapture(
+                    event.pointerId
+                );
+            } catch (_) {}
+
+            updateSelectionVisual();
+        }
+
+
+        function handlePointerMove(event) {
+
+            if (!selecting) {
+                return;
+            }
+
+            event.preventDefault();
+
+            const cell =
+                getCellFromPointer(event);
+
+            if (!cell) {
+                return;
+            }
+
+            const cells =
+                getStraightLineCells(
+                    selectionStart,
+                    cell
+                );
+
+            if (cells.length === 0) {
+                return;
+            }
+
+            selectionCells = cells;
+
+            updateSelectionVisual();
+
+            drawCurrentLine(
+                selectionStart,
+                cell
+            );
+        }
+
+
+        function handlePointerUp(event) {
+
+            if (!selecting) {
+                return;
+            }
+
+            event.preventDefault();
+
+            const endCell =
+                getCellFromPointer(event);
+
+            selecting = false;
+
+            try {
+                gridWrapper.releasePointerCapture(
+                    event.pointerId
+                );
+            } catch (_) {}
+
+            if (!endCell) {
+                clearCurrentSelection();
+                return;
+            }
+
+            const cells =
+                getStraightLineCells(
+                    selectionStart,
+                    endCell
+                );
+
+            if (cells.length > 0) {
+
+                selectionCells = cells;
+
+                checkSelectedWord(
+                    cells
+                );
+            }
+
+            clearCurrentSelection();
+        }
+
+
+        function handlePointerCancel() {
+
+            selecting = false;
+
+            clearCurrentSelection();
+        }
+
+
+        function handlePointerLeave(event) {
+
+            /*
+             * Do not cancel here because pointer capture
+             * allows dragging outside the grid.
+             */
+
+            if (!selecting) {
+                clearCurrentSelection();
+            }
+        }
+
+
+        /* =========================================================
+           STRAIGHT LINE CALCULATION
+           ========================================================= */
+
+        function getStraightLineCells(
+            start,
+            end
+        ) {
+
+            const dr =
+                end.row - start.row;
+
+            const dc =
+                end.col - start.col;
+
+            /*
+             * Horizontal
+             */
+            if (dr === 0 && dc !== 0) {
+
+                const step =
+                    dc > 0 ? 1 : -1;
+
+                const cells = [];
+
+                for (
+                    let col = start.col;; col += step
+                ) {
+
+                    cells.push({
+                        row: start.row,
+                        col
+                    });
+
+                    if (col === end.col) {
+                        break;
+                    }
+                }
+
+                return cells;
+            }
+
+            /*
+             * Vertical
+             */
+            if (dc === 0 && dr !== 0) {
+
+                const step =
+                    dr > 0 ? 1 : -1;
+
+                const cells = [];
+
+                for (
+                    let row = start.row;; row += step
+                ) {
+
+                    cells.push({
+                        row,
+                        col: start.col
+                    });
+
+                    if (row === end.row) {
+                        break;
+                    }
+                }
+
+                return cells;
+            }
+
+            /*
+             * Diagonal
+             */
+            if (
+                Math.abs(dr) ===
+                Math.abs(dc) &&
+                dr !== 0
+            ) {
+
+                const rowStep =
+                    dr > 0 ? 1 : -1;
+
+                const colStep =
+                    dc > 0 ? 1 : -1;
+
+                const cells = [];
+
+                let row = start.row;
+                let col = start.col;
+
+                while (true) {
+
+                    cells.push({
+                        row,
+                        col
+                    });
+
+                    if (
+                        row === end.row &&
+                        col === end.col
+                    ) {
+                        break;
+                    }
+
+                    row += rowStep;
+                    col += colStep;
+                }
+
+                return cells;
+            }
+
+            return [];
+        }
+
+
+        /* =========================================================
+           SELECTION VISUAL
+           ========================================================= */
+
+        function updateSelectionVisual() {
+
+            document
+                .querySelectorAll(".cell.selected")
+                .forEach(cell => {
+                    cell.classList.remove("selected");
+                });
+
+            selectionCells.forEach(position => {
+
+                const cell =
+                    document.querySelector(
+                        `.cell[data-row="${position.row}"][data-col="${position.col}"]`
+                    );
+
+                if (cell) {
+                    cell.classList.add("selected");
+                }
+            });
+        }
+
+
+        function clearCurrentSelection() {
+
+            document
+                .querySelectorAll(".cell.selected")
+                .forEach(cell => {
+                    cell.classList.remove("selected");
+                });
+
+            selectionCells = [];
+
+            selectionStart = null;
+
+            const line =
+                document.getElementById(
+                    "currentLine"
+                );
+
+            line.style.display = "none";
+        }
+
+
+        function drawCurrentLine(
+            start,
+            end
+        ) {
+
+            const line =
+                document.getElementById(
+                    "currentLine"
+                );
+
+            const p1 =
+                getCellCenter(
+                    start.row,
+                    start.col
+                );
+
+            const p2 =
+                getCellCenter(
+                    end.row,
+                    end.col
+                );
+
+            line.setAttribute(
+                "x1",
+                p1.x
+            );
+
+            line.setAttribute(
+                "y1",
+                p1.y
+            );
+
+            line.setAttribute(
+                "x2",
+                p2.x
+            );
+
+            line.setAttribute(
+                "y2",
+                p2.y
+            );
+
+            line.style.display =
+                "block";
+        }
+
+
+        function getCellCenter(row, col) {
+
+            /*
+             * SVG viewBox = 1200 x 1200.
+             * Each cell therefore has a 100 x 100 center.
+             */
+
+            return {
+                x: col * 100 + 50,
+                y: row * 100 + 50
+            };
+        }
+
+
+        /* =========================================================
+           WORD CHECK
+           ========================================================= */
+
+        function checkSelectedWord(cells) {
+
+            if (cells.length < 2) {
+                return;
+            }
+
+            const selectedWord =
+                cells
+                .map(cell =>
+                    board[cell.row][cell.col]
+                )
+                .join("");
+
+            const reversed =
+                selectedWord
+                .split("")
+                .reverse()
+                .join("");
+
+            let matchedWord = null;
+
+            for (const word of currentWords) {
+
+                if (foundWords.has(word)) {
+                    continue;
+                }
+
+                if (
+                    selectedWord === word ||
+                    reversed === word
+                ) {
+
+                    matchedWord = word;
+                    break;
+                }
+            }
+
+            if (!matchedWord) {
+                return;
+            }
+
+            foundWords.add(matchedWord);
+
+            score += POINTS_PER_WORD;
+
+            markFoundCells(cells);
+
+            drawFoundLine(
+                cells[0],
+                cells[cells.length - 1]
+            );
+
+            renderWordList();
+
+            updateGameUI();
+
+            if (
+                foundWords.size ===
+                WORDS_PER_LEVEL
+            ) {
+
+                completeLevel();
+            }
+        }
+
+
+        /* =========================================================
+           FOUND WORD LINE
+           ========================================================= */
+
+        function markFoundCells(cells) {
+
+            cells.forEach(position => {
+
+                const cell =
+                    document.querySelector(
+                        `.cell[data-row="${position.row}"][data-col="${position.col}"]`
+                    );
+
+                if (cell) {
+                    cell.classList.add("found");
+                }
+            });
+        }
+
+
+        function drawFoundLine(
+            start,
+            end
+        ) {
+
+            const svg =
+                document.getElementById(
+                    "linesSvg"
+                );
+
+            const line =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "line"
+                );
+
+            const p1 =
+                getCellCenter(
+                    start.row,
+                    start.col
+                );
+
+            const p2 =
+                getCellCenter(
+                    end.row,
+                    end.col
+                );
+
+            line.setAttribute(
+                "x1",
+                p1.x
+            );
+
+            line.setAttribute(
+                "y1",
+                p1.y
+            );
+
+            line.setAttribute(
+                "x2",
+                p2.x
+            );
+
+            line.setAttribute(
+                "y2",
+                p2.y
+            );
+
+            line.classList.add(
+                "found-line"
+            );
+
+            svg.appendChild(line);
+        }
+
+
+        function clearLines() {
+
+            const svg =
+                document.getElementById(
+                    "linesSvg"
+                );
+
+            svg
+                .querySelectorAll(
+                    ".found-line"
+                )
+                .forEach(line =>
+                    line.remove()
+                );
+
+            document.getElementById(
+                "currentLine"
+            ).style.display = "none";
+        }
+
+
+        /* =========================================================
+           LEVEL COMPLETION
+           ========================================================= */
+
+        function completeLevel() {
+
+            stopTimer();
+
+            /*
+             * Save the highest score for this level.
+             */
+
+            const oldScore =
+                Number(
+                    levelScores[currentLevel] || 0
+                );
+
+            levelScores[currentLevel] =
+                Math.max(
+                    oldScore,
+                    score
+                );
+
+            if (
+                !completedLevels.includes(
+                    currentLevel
+                )
+            ) {
+
+                completedLevels.push(
+                    currentLevel
+                );
+            }
+
+            /*
+             * Unlock next level.
+             */
+
+            if (
+                currentLevel <
+                TOTAL_LEVELS
+            ) {
+
+                unlockedLevels =
+                    Math.max(
+                        unlockedLevels,
+                        currentLevel + 1
+                    );
+            }
+
+            saveState();
+
+            updateLeaderboard();
+
+            showCompletionModal();
+        }
+
+
+        /* =========================================================
+           COMPLETION MODAL
+           ========================================================= */
+
+        function showCompletionModal() {
+
+            const modal =
+                document.getElementById(
+                    "completionModal"
+                );
+
+            const title =
+                document.getElementById(
+                    "completionTitle"
+                );
+
+            const message =
+                document.getElementById(
+                    "completionMessage"
+                );
+
+            const scoreElement =
+                document.getElementById(
+                    "completionScore"
+                );
+
+            const unlockMessage =
+                document.getElementById(
+                    "unlockMessage"
+                );
+
+            const nextButton =
+                document.getElementById(
+                    "nextLevelButton"
+                );
+
+            scoreElement.textContent =
+                score;
+
+            if (
+                currentLevel ===
+                TOTAL_LEVELS
+            ) {
+
+                title.textContent =
+                    "🐘 All 100 Levels Completed!";
+
+                message.textContent =
+                    "Amazing! You completed every level of Sanju's Ganesha Word Hunt. May Lord Ganesha bless your journey with wisdom, success and happiness.";
+
+                unlockMessage.textContent =
+                    "🎉 You have completed all 100 levels!";
+
+                nextButton.style.display =
+                    "none";
+
+            } else {
+
+                title.textContent =
+                    "🐘 Level " +
+                    currentLevel +
+                    " Completed!";
+
+                message.textContent =
+                    "Wonderful work, " +
+                    student.name +
+                    "! You found all 10 words.";
+
+                unlockMessage.textContent =
+                    "🔓 Level " +
+                    (currentLevel + 1) +
+                    " is now unlocked.";
+
+                nextButton.style.display =
+                    "block";
+            }
+
+            modal.classList.add("show");
+        }
+
+
+        function closeCompletionModal() {
+
+            document
+                .getElementById(
+                    "completionModal"
+                )
+                .classList.remove("show");
+
+            showScreen("levels");
+        }
+
+
+        function goToNextLevel() {
+
+            closeCompletionModal();
+
+            if (
+                currentLevel <
+                TOTAL_LEVELS
+            ) {
+
+                startLevel(
+                    currentLevel + 1
+                );
+            }
+        }
+
+
+        /* =========================================================
+           LEVEL PAGE
+           ========================================================= */
+
+        function renderLevels() {
+
+            if (!student) {
+                return;
+            }
+
+            const welcomeBox =
+                document.getElementById(
+                    "welcomeBox"
+                );
+
+            welcomeBox.innerHTML = `
+        🐘 Welcome,
+        <strong>${escapeHTML(student.name)}</strong>!
+        <br>
+        Student ID:
+        <strong>${escapeHTML(student.id)}</strong>
+        <br>
+        ${escapeHTML(student.university)}
+        <br>
+        <small>
+            Level ${unlockedLevels} unlocked
+        </small>
+    `;
+
+            const grid =
+                document.getElementById(
+                    "levelGrid"
+                );
+
+            grid.innerHTML = "";
+
+            for (
+                let level = 1; level <= TOTAL_LEVELS; level++
+            ) {
+
+                const card =
+                    document.createElement("button");
+
+                card.className =
+                    "level-card";
+
+                const completed =
+                    completedLevels.includes(
+                        level
+                    );
+
+                const unlocked =
+                    level <= unlockedLevels;
+
+                const current =
+                    level === unlockedLevels &&
+                    !completed;
+
+                if (!unlocked) {
+
+                    card.classList.add(
+                        "locked"
+                    );
+
+                } else {
+
+                    card.classList.add(
+                        "unlocked"
+                    );
+
+                    if (completed) {
+                        card.classList.add(
+                            "completed"
+                        );
+                    }
+
+                    if (current) {
+                        card.classList.add(
+                            "current"
+                        );
+                    }
+
+                    card.onclick = () =>
+                        startLevel(level);
+                }
+
+                let status = "🔒";
+
+                if (completed) {
+                    status = "✓";
+                } else if (unlocked) {
+                    status = "▶️";
+                }
+
+                const savedScore =
+                    Number(
+                        levelScores[level] || 0
+                    );
+
+                card.innerHTML = `
+            <div class="level-status">
+                ${status}
+            </div>
+
+            <div class="level-number">
+                ${level}
+            </div>
+
+            <div class="level-score">
+                ${
+                    completed
+                        ? savedScore + " pts"
+                        : unlocked
+                            ? "Play"
+                            : "Locked"
+                }
+            </div>
+        `;
+
+                grid.appendChild(card);
+            }
+        }
+
+
+        /* =========================================================
+           LEADERBOARD
+           ========================================================= */
+
+        function getLeaderboard() {
+
+            try {
+
+                return JSON.parse(
+                    localStorage.getItem(
+                        "sgwh_leaderboard"
+                    ) || "[]"
+                );
+
+            } catch (_) {
+
+                return [];
+            }
+        }
+
+
+        function saveLeaderboard(data) {
+
+            localStorage.setItem(
+                "sgwh_leaderboard",
+                JSON.stringify(
+                    data.slice(0, 100)
+                )
+            );
+        }
+
+
+        function updateLeaderboard() {
+
+            if (!student) {
+                return;
+            }
+
+            const leaderboard =
+                getLeaderboard();
+
+            const totalScore =
+                Object.values(levelScores)
+                .reduce(
+                    (sum, value) =>
+                    sum + Number(value || 0),
+                    0
+                );
+
+            const maxLevel =
+                completedLevels.length ?
+                Math.max(
+                    ...completedLevels
+                ) :
+                0;
+
+            /*
+             * Keep one current record per Student ID.
+             */
+
+            const existingIndex =
+                leaderboard.findIndex(
+                    entry =>
+                    entry.studentId ===
+                    student.id
+                );
+
+            const entry = {
+                studentName: student.name,
+
+                studentId: student.id,
+
+                university: student.university,
+
+                level: maxLevel,
+
+                score: totalScore
+            };
+
+            if (existingIndex >= 0) {
+
+                leaderboard[
+                    existingIndex
+                ] = entry;
+
+            } else {
+
+                leaderboard.push(entry);
+            }
+
+            leaderboard.sort(
+                (a, b) =>
+                Number(b.score) -
+                Number(a.score)
+            );
+
+            saveLeaderboard(
+                leaderboard
+            );
+        }
+
+
+        function renderLeaderboard() {
+
+            const body =
+                document.getElementById(
+                    "leaderboardBody"
+                );
+
+            body.innerHTML = "";
+
+            const leaderboard =
+                getLeaderboard();
+
+            if (!leaderboard.length) {
+
+                body.innerHTML = `
+            <tr>
+                <td colspan="6">
+                    🪔 No leaderboard entries yet.
+                    Complete a level to appear here.
+                </td>
+            </tr>
+        `;
+
+                return;
+            }
+
+            leaderboard
+                .slice(0, 100)
+                .forEach(
+                    (entry, index) => {
+
+                        const row =
+                            document.createElement("tr");
+
+                        let rank =
+                            index + 1;
+
+                        if (rank === 1) {
+                            rank = "🥇";
+                        } else if (rank === 2) {
+                            rank = "🥈";
+                        } else if (rank === 3) {
+                            rank = "🥉";
+                        }
+
+                        row.innerHTML = `
+                    <td class="rank-medal">
+                        ${rank}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            entry.studentName
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            entry.studentId
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            entry.university
+                        )}
+                    </td>
+
+                    <td>
+                        ${entry.level}
+                    </td>
+
+                    <td>
+                        ⭐ ${entry.score}
+                    </td>
+                `;
+
+                        body.appendChild(row);
+                    }
+                );
+        }
+
+
+        function goHomeFromLeaderboard() {
+
+            if (student) {
+                showScreen("levels");
+            } else {
+                showScreen("registration");
+            }
+        }
+
+
+        /* =========================================================
+           LOGOUT / CHANGE STUDENT
+           ========================================================= */
+
+        function logoutStudent() {
+
+            stopTimer();
+
+            student = null;
+
+            /*
+             * Student registration is removed, but the
+             * leaderboard remains stored.
+             */
+
+            localStorage.removeItem(
+                "sgwh_student"
+            );
+
+            unlockedLevels = 1;
+
+            completedLevels = [];
+
+            levelScores = {};
+
+            showScreen("registration");
+        }
+
+
+        /* =========================================================
+           HTML ESCAPING
+           ========================================================= */
+
+        function escapeHTML(value) {
+
+            return String(value)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+
+        /* =========================================================
+           INITIALIZATION
+           ========================================================= */
+
+        function initializeGame() {
+
+            loadState();
+
+            loadTheme();
+
+            /*
+             * If registration information already exists,
+             * automatically restore the Levels page.
+             */
+
+            if (student) {
+
+                showScreen("levels");
+
+            } else {
+
+                showScreen("registration");
+            }
+        }
+
+        initializeGame();
+    </script>
+
+</body>
+
+</html>
